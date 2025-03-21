@@ -2,7 +2,7 @@ import { createServer } from 'http';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
-const PORT = 3002;
+const PORT = 3000;
 const urlDatabase = {}; // Store URLs in-memory
 
 const serverFile = async (res, filePath, contentType) => {
