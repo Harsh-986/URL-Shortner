@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+        <form id="shorten-form">
+            <div>
+                <label for="url">Enter Url:</label>
+                <input type="url" name="url" id="url" placeholder="Enter URL">
+                
+            </div>
+            <div>
+                <label for="Shortcode">Enter Shortcode:</label>
+                <input type="text" name="Shortcode" id="Shortcode" placeholder="Enter Shortcode">
+                
+            </div>
+            <button >Shorten</button>
+        </form>
+        <h2>Shortened URL</h2>
+        <div id="shortened-url"></div>
+    </div>
+    <script>
+        document.getElementById('shorten-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+        
+            const formData = new FormData(e.target);
+            const url = formData.get('url');
+            const Shortcode = formData.get('Shortcode');
+        
+            try {
+                const response = await fetch('/shorten', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url, Shortcode })
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    document.getElementById('shortened-url').innerHTML = `<a href="${result.shortUrl}" target="_blank">${result.shortUrl}</a>`;
+                } else {
+                    document.getElementById('shortened-url').textContent = result.error;
+                }
+            } catch (error) {
+                document.getElementById('shortened-url').textContent = 'Error: ' + error.message;
+            }
+        });
+
+    </script>
+</body>
+</html>
